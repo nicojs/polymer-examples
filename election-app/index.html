@@ -8,6 +8,10 @@
     <link rel="import" href="/bower_components/neon-animation/neon-animation.html">
     <link rel="import" href="/bower_components/neon-animation/neon-animated-pages.html">
     <link rel="import" href="/bower_components/app-elements/app-elements.html">
+
+    <!--<link rel="import" href="/voting-page/voting-page.html">
+    <link rel="import" href="/details-page/details-page.html">-->
+
 </head>
 
 <body class="fullbleed layout vertical">
@@ -16,55 +20,18 @@
     <dom-module is="dom-bind" id="election-app">
         <template>
             <app-location route="{{route}}"></app-location>
-            <app-route id="router" pattern="/:view" active="{{active}}" route="{{route}}" data="{{routeData}}" tail="{{routeTail}}"></app-route>
-            <app-route id="router" pattern="/:id" active="{{secondActive}}" route="{{routeTail}}" data="{{routeChildData}}" tail="{{routeChildTail}}"></app-route>
-            <paper-header-panel class="flex">
+            <app-route id="router" pattern="/:view" route="{{route}}" data="{{routeData}}" tail="{{routeTail}}"></app-route>
+
+            <paper-header-panel>
                 <paper-toolbar>
                     <h1>{{message}}</h1>
                 </paper-toolbar>
-                <div>
-                    <neon-animated-pages entry-animation="slide-from-right-animation" selected="{{routeData.view}}" exit-animation="slide-left-animation"
-                        attr-for-selected="name" selected="0" id="pages">
-                        <div name="vote">
-                            <h3>Candidates:</h3>
-                            <iron-list id="candidateGrid" grid items="{{candidates}}">
-                                <template>
-                                    <paper-card heading="Vote for" style="margin-top:2px;zoom:96%;width:45%;">
-                                        {{item.name}} {{item.lastname}}
-                                        <div class="card-actions">
-                                            <paper-icon-button icon="info-outline" on-tap="_showInfo"></paper-icon-button>
-                                            <paper-fab on-tap="vote" mini icon="star" style="float:right;margin-bottom:5px;"></paper-fab>
-                                        </div>
-                                    </paper-card>
-                                </template>
-                            </iron-list>
-                            <div>
-                                <h3>Votes:</h3>
-                                <ul>
-                                    <template is="dom-repeat" items="{{votes}}" sort="sortVotes">
-                                        <li>1 for: {{item.candidate.name}} {{item.candidate.lastname}} on {{item.time}}</li>
-                                    </template>
-                                </ul>
-                            </div>
-                            <template is="dom-if" if="[[determineHasWinner(votes.*)]]">
-                                <h3>We have a winner: {{getWinner(votes.*)}}</h3>
-                            </template>
-                        </div>
-                        <div name="details">
-                            <paper-card>
-                                <div class="card-content">
-                                    <div class="header">[[selectedCandidate.name]] [[selectedCandidate.lastname]] </div>
-                                    <p>Biography for....</p>
-                                </div>
-                                <div class="card-actions">
-                                    <p>Current votecount: {{_voteCount(selectedCandidate, votes.*)}} </p>
-                                    <paper-button on-tap="_goBack">Back</paper-button>
-                                </div>
-                            </paper-card>
-                        </div>
-                    </neon-animated-pages>
-
-                </div>
+                <neon-animated-pages attr-for-selected="name" selected="{{routeData.view}}" id="pages" entry-animation="fade-in-animation"
+                    exit-animation="fade-out-animation">
+                    <vote-page name="voting" votes="[[votes]]" candidates="[[candidates]]" on-show-info="showInfo" on-vote="vote">Loading vote page...</vote-page>
+                    <details-page route="{{routeTail}}" name="details" selected-candidate="{{selectedCandidate}}" candidates="[[candidates]]"
+                        votes="[[votes]]" on-goback="goBack">Loading details...</details-page>
+                </neon-animated-pages>
             </paper-header-panel>
         </template>
         <script src="/election-app.js"></script>
