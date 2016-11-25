@@ -1,0 +1,20 @@
+{
+  "name": "election-app",
+  "authors": [
+    "Nico Jansen <jansennico@gmail.com>"
+  ],
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "polymer": "^1.7.0"
+  }
+}

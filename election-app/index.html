@@ -1,0 +1,65 @@
+<html>
+
+<head>
+    <link rel="import" href="bower_components/polymer/polymer.html">
+
+</head>
+
+<body>
+
+    <template is="dom-bind" id="myapp">
+        <h1>Hello {{message}}</h1>
+    </template>
+    <script>
+    document.querySelector("#myapp").message = "Polymer!";
+    </script>
+
+
+    <dom-module is="dom-bind" id="election-app">
+        <template>
+            <h1>{{message}}</h1>
+            <div><h3>Candidates:</h3>
+                <ul>
+                    <template is="dom-repeat" items="{{candidates}}">
+                        <li>{{item.name}} {{item.lastname}} <button on-tap="vote">Vote {{item.name}}!</button></li>
+                    </template>
+                </ul>
+            </div>
+            <div><h3>Votes:</h3>
+                <ul>
+                    <template is="dom-repeat" items="{{votes}}" sort="sortVotes">
+                        <li>1 for: {{item.candidate.name}} {{item.candidate.lastname}} on {{item.time}}</li>
+                    </template>
+                </ul>
+            </div>
+            <template is="dom-if" if="[[determineHasWinner(votes.*)]]">
+                <h3>We have a winner: {{getWinner(votes.*)}}</h3>
+            </template>
+        </template>
+        <script src="./election-app.js"></script>
+    </dom-module>
+
+    <election-app></election-app>
+
+    <script>
+    
+    var Candidate = function(name, lastname){
+        this.name = name;
+        this.lastname = lastname;  
+    }
+
+    var Vote = function(candidate, time){
+        this.candidate = candidate;
+        this.time = time; 
+    }
+    
+    document.querySelector("election-app").message = "Election Day!";
+    document.querySelector("election-app").candidates = [
+        new Candidate('Donald', 'Dump'),
+        new Candidate('Hilary', 'Clint') ];
+    document.querySelector("election-app").votes = [];
+    </script>
+
+</body>
+
+</html>
